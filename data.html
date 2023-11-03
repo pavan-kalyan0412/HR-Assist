@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <!-- Add your CSS styles or link to an external stylesheet here -->
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="/">Home</a></li>
+      <a href="#" id="update-profile-link">Update Profile</a> <!-- Added an id for the update profile link -->
+      <li><a href="/resume-upload">Upload Resume</a></li>
+      <li><a href="/logout">Log Out</a></li>
+    </ul>
+  </nav>
+
+  <!-- Placeholder content for the homepage -->
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
+    <h1>Welcome to the Home Page!</h1>
+    <p>This is the homepage content. You can customize it as needed.</p>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      const updateProfileLink = document.getElementById('update-profile-link');
+
+      updateProfileLink.addEventListener('click', function(event) {
+        event.preventDefault();
+
+        // Fetch the user's data from the server
+        fetch('/update-profile')
+          .then((response) => response.json())
+          .then((data) => {
+            // Populate the form fields with the user's data
+            document.getElementById('first-name').value = data.firstName;
+            document.getElementById('last-name').value = data.lastName;
+            document.getElementById('email').value = data.email;
+            document.getElementById('organization').value = data.organization;
+            document.getElementById('skills').value = data.skills;
+            // Add other form fields here
+          })
+          .catch((error) => {
+            console.error('Error fetching user data:', error);
+          });
+      });
+    });
+  </script>
+</body>
+</html>
