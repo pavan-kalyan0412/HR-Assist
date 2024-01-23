@@ -838,7 +838,7 @@ function sendPasswordResetEmail(email, resetToken) {
     to: email,
     subject: 'Password Reset',
     html: `
-      <p>Please click the following link to reset your password:</p>
+      <p>Please click the below button to reset your password:</p>
       <a href="${resetLink}">Reset Password</a>
     `
   };
