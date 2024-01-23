@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 <!DOCTYPE html>
 <html>
   <meta charset="UTF-8">
@@ -29,35 +29,3 @@
   </script>
 </body>
 </html>
-=======
-<!DOCTYPE html>
-<html>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    /* Add your CSS styles here */
-  </style>
-</head>
-<body>
-  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
-    <p>Your account has been deactivated. Click <a href="#" onclick="showReactivationForm()">here</a> to reactivate your account.</p>
-
-    <div id="reactivationForm" style="display: none;">
-      <form action="/reactivate-account" method="post">
-        <label for="email">Email:</label>
-        <input type="email" id="email" name="email" value="<%= email %>" required>
-        <button type="submit">Reactivate Account</button>
-      </form>
-    </div>
-  </div>
-
-  <script>
-    function showReactivationForm() {
-      const formDiv = document.getElementById('reactivationForm');
-      formDiv.style.display = 'block';
-    }
-  </script>
-</body>
-</html>
->>>>>>> bb331430285006e0ea562773fc31276d07ed994d
