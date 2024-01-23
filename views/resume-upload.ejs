@@ -1,0 +1,398 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Upload</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:rgb(255, 255, 255);
+    }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 300px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #47c2cb;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        button:hover {
+            background-color: #38d44a;
+        }
+
+        p.error-message {
+            color: #c73434;
+            display: none;
+            margin-top: 5px;
+        }
+
+        nav {
+      background-color: #2c2a2a;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+        nav {
+      background-color: #2c2a2a;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    nav ul li a:hover {
+      color: #47c2cb;
+        }
+
+        /* New styles for the view link and preview */
+        .view-link-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #resumePreview {
+    width: 100%;
+    height: 500px; /* You can adjust the height as needed */
+    border: 2px solid #ccc;
+    box-shadow: 0 0 5px #888;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="window.history.back();">Back</a></li>
+            <li><a href="/confirmation" id="deactivateAccountLink">Deactivate My Account</a></li>
+            <li><a href="/confirm-delete" id="deleteAccountLink">Delete My Account</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </nav>
+
+    
+    <!-- Resume Upload Form -->
+    <h1>Resume Upload</h1>
+    <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <!-- Include the user's unique identifier (e.g., email) in a hidden input field -->
+        <input type="hidden" name="email" id="emailinput" value="<%= email %>">
+        <input type="file" name="resume" id="resume" placeholder="Upload only PDF files">
+        <p class="error-message">Only PDF files are allowed.</p>
+        <button type="submit">Upload</button>
+        
+        <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+          <!-- Display the success message just below the upload button -->
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <p id="successMessage" style="color: green; text-align: center;"><%= successMessage %></p>
+          </div>
+        <% } %>
+      </form>
+
+ <!-- View Link and Preview Container -->
+ <div class="view-link-container" id="viewLinkContainer">
+    <a href="#" id="viewLink" target="_blank">View Uploaded Resume</a>
+    <div class="preview-pdf" id="previewPdfContainer">
+        <iframe id="resumePreview" src="" frameborder="20"></iframe>
+    </div>
+</div>
+
+    <script>
+        // JavaScript to display error message when non-PDF file is selected
+        const fileInput = document.getElementById('resume');
+        const errorMessage = document.querySelector('.error-message');
+        const successMessage = document.getElementById('successMessage');
+        const allowedFileTypes = ['application/pdf'];
+        const viewLinkContainer = document.getElementById('viewLinkContainer');
+        const viewLink = document.getElementById('viewLink');
+        const previewPdfContainer = document.getElementById('previewPdfContainer');
+        const resumePreview = document.getElementById('resumePreview');
+
+        function validateForm() {
+            const file = fileInput.files[0];
+
+            if (file && !allowedFileTypes.includes(file.type)) {
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Reset the file input to clear the invalid selection
+                return false; // Cancel form submission
+            }
+
+            return true; // Allow form submission
+        }
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+
+            if (file && !allowedFileTypes.includes(file.type)) {
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Reset the file input to clear the invalid selection
+            } else {
+                errorMessage.style.display = 'none';
+                // Show the view link and preview container
+                viewLinkContainer.style.display = 'block';
+                const fileUrl = URL.createObjectURL(file);
+                viewLink.href = fileUrl;
+                resumePreview.src = fileUrl;
+            }
+        });
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const email = urlParams.get('email');
+  
+        document.getElementById('emailinput').value = email;
+        console.log("Email being sent with the form:", email); // Add this log to check the email being sent with the form 
+        
+        function redirectToDeactivateConfirmationPage() {
+      window.location.href = '/deactivate'; // Change to '/confirm-deactivate' for consistency
+    }
+
+
+    document.getElementById('deactivateAccountLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      redirectToDeactivateConfirmationPage();
+    });
+    </script>
+</body>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Resume Upload</title>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color:rgb(255, 255, 255);
+    }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        form {
+            width: 300px;
+            margin: 20px auto;
+            border: 1px solid #ccc;
+            padding: 20px;
+            border-radius: 5px;
+        }
+
+        input[type="file"] {
+            margin-bottom: 10px;
+        }
+
+        button {
+            background-color: #47c2cb;
+            color: #fff;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            float: right;
+        }
+
+        button:hover {
+            background-color: #38d44a;
+        }
+
+        p.error-message {
+            color: #c73434;
+            display: none;
+            margin-top: 5px;
+        }
+
+        nav {
+      background-color: #2c2a2a;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+        nav {
+      background-color: #2c2a2a;
+      color: #fff;
+      display: flex;
+      justify-content: space-between;
+      padding: 10px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+    }
+
+    nav ul li {
+      margin-right: 20px;
+    }
+
+    nav ul li a {
+      text-decoration: none;
+      color: #fff;
+    }
+
+    nav ul li a:hover {
+      color: #47c2cb;
+        }
+
+        /* New styles for the view link and preview */
+        .view-link-container {
+            display: none;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #resumePreview {
+    width: 100%;
+    height: 500px; /* You can adjust the height as needed */
+    border: 2px solid #ccc;
+    box-shadow: 0 0 5px #888;
+}
+
+    </style>
+</head>
+<body>
+
+    <!-- Navigation Bar -->
+    <nav>
+        <ul>
+            <li><a href="/home">Home</a></li>
+            <li><a href="javascript:void(0);" onclick="window.history.back();">Back</a></li>
+            <li><a href="/confirmation" id="deactivateAccountLink">Deactivate My Account</a></li>
+            <li><a href="/confirm-delete" id="deleteAccountLink">Delete My Account</a></li>
+            <li><a href="/logout">Log Out</a></li>
+        </ul>
+    </nav>
+
+    
+    <!-- Resume Upload Form -->
+    <h1>Resume Upload</h1>
+    <form action="http://localhost:3000/upload" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
+        <!-- Include the user's unique identifier (e.g., email) in a hidden input field -->
+        <input type="hidden" name="email" id="emailinput" value="<%= email %>">
+        <input type="file" name="resume" id="resume" placeholder="Upload only PDF files">
+        <p class="error-message">Only PDF files are allowed.</p>
+        <button type="submit">Upload</button>
+        
+        <% if (typeof successMessage !== 'undefined' && successMessage) { %>
+          <!-- Display the success message just below the upload button -->
+          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <p id="successMessage" style="color: green; text-align: center;"><%= successMessage %></p>
+          </div>
+        <% } %>
+      </form>
+
+ <!-- View Link and Preview Container -->
+ <div class="view-link-container" id="viewLinkContainer">
+    <a href="#" id="viewLink" target="_blank">View Uploaded Resume</a>
+    <div class="preview-pdf" id="previewPdfContainer">
+        <iframe id="resumePreview" src="" frameborder="20"></iframe>
+    </div>
+</div>
+
+    <script>
+        // JavaScript to display error message when non-PDF file is selected
+        const fileInput = document.getElementById('resume');
+        const errorMessage = document.querySelector('.error-message');
+        const successMessage = document.getElementById('successMessage');
+        const allowedFileTypes = ['application/pdf'];
+        const viewLinkContainer = document.getElementById('viewLinkContainer');
+        const viewLink = document.getElementById('viewLink');
+        const previewPdfContainer = document.getElementById('previewPdfContainer');
+        const resumePreview = document.getElementById('resumePreview');
+
+        function validateForm() {
+            const file = fileInput.files[0];
+
+            if (file && !allowedFileTypes.includes(file.type)) {
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Reset the file input to clear the invalid selection
+                return false; // Cancel form submission
+            }
+
+            return true; // Allow form submission
+        }
+
+        fileInput.addEventListener('change', function () {
+            const file = fileInput.files[0];
+
+            if (file && !allowedFileTypes.includes(file.type)) {
+                errorMessage.style.display = 'block';
+                fileInput.value = ''; // Reset the file input to clear the invalid selection
+            } else {
+                errorMessage.style.display = 'none';
+                // Show the view link and preview container
+                viewLinkContainer.style.display = 'block';
+                const fileUrl = URL.createObjectURL(file);
+                viewLink.href = fileUrl;
+                resumePreview.src = fileUrl;
+            }
+        });
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const email = urlParams.get('email');
+  
+        document.getElementById('emailinput').value = email;
+        console.log("Email being sent with the form:", email); // Add this log to check the email being sent with the form 
+        
+        function redirectToDeactivateConfirmationPage() {
+      window.location.href = '/deactivate'; // Change to '/confirm-deactivate' for consistency
+    }
+
+
+    document.getElementById('deactivateAccountLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      redirectToDeactivateConfirmationPage();
+    });
+    </script>
+</body>
+>>>>>>> bb331430285006e0ea562773fc31276d07ed994d
+</html>

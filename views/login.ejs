@@ -1,0 +1,109 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Login</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #cc0a0a;
+      border-radius: 5px;
+      background-color: rgb(18, 177, 180);
+    }
+
+    h1 {
+      text-align: center;
+      margin-top: 0px;
+      margin-bottom: 0px;
+    }
+
+    a{
+      color:#000000
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    input[type="email"],
+    input[type="password"] {
+      width: 95%;
+      padding: 6px;
+      border-radius: 5px;
+      border: 0px solid #beb22f;
+    }
+
+    .error-message {
+      color: rgb(179, 27, 27);
+      font-size: 14px;
+    }
+
+    input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 5px;
+      border: none;
+      background-color: #00080b;
+      color: #f3f3f7;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #1ebd26;
+    }
+
+    .forgot-password {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .register {
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .forgot-password a:hover,
+     .register a:hover { 
+       color: #000000;
+}
+
+    
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Login</h1>
+    <form id="loginForm" action="http://localhost:3000/home" method="post">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <label>
+        <input type="checkbox" checked="checked" name="remember"> Remember me
+      </label>
+      <input type="submit" value="Login">
+      <div class="forgot-password">
+        <a href='/forgot-password.html'>Forgot password?</a>
+      </div>
+      <div class="register">
+        <a href='/register.html'>Not registered yet? Register here.</a>
+      </div>
+    </form>
+  </div>
+</body>
+

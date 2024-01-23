@@ -1,0 +1,337 @@
+<<<<<<< HEAD
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background-color: #000000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+nav ul li a:hover {
+            color: #47c2cb;
+        }
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  margin-top: 30px;
+}
+
+.profile-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-container p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.update-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.update-button:hover {
+  background-color: #45a049;
+}
+
+.active {
+      color: #47c2cb; /* Change the color to your desired highlight color */
+    }
+
+</style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="/home" id="homeLink">Home</a></li>
+      <% if (user) { %>
+        <li><a href="/profile?email=<%= user.email %>" id="profileLink">Profile</a></li>
+      <% } %>
+      <li><a href="/resume-upload" id="resumeUploadLink">Upload Resume</a></li>
+      <li><a href="/confirmation" id="deactivateAccountLink">Deactivate My Account</a></li>
+      <li><a href="/confirm-delete" id="deleteAccountLink">Delete My Account</a></li>
+      <li><a href="/logout" id="logoutLink">Log Out</a></li>
+    </ul>
+  </nav>
+
+  <!-- Display user details -->
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh;">
+    <h1>Welcome to Your Profile!</h1>
+    <p>First Name: <%= user.firstName %>🔒</p>
+    <p>Last Name: <%= user.lastName %>🔒</p>
+    <p>Email: <%= user.email %>🔒</p>
+    <p>Mobile Number: <%= user.mobileNumber %>🔓</p>
+    <p>Organization: <%= user.organization %>🔓</p>
+    <p>Experience: <%= user.experience %> years🔓</p>
+    <p>Skills: <%= user.skills %>🔓</p>
+    
+    <% if (user.resumeDetails && user.resumeDetails.fileName) { %>
+      <div style="display: flex; align-items: center;">
+        <p style="margin-right: 10px;">Resume: <%= user.resumeDetails.originalName %></p>
+        <a href="/uploads/<%= encodeURIComponent(user.resumeDetails.fileName) %>" target="_blank">
+          <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
+            View Resume
+          </button>
+        </a>
+
+      </div>
+    <% } else { %>
+      <p>No resume uploaded.</p>
+    <% } %>
+
+    <!-- Add a link/button to update user details -->
+    <a href="/update-profile?email=<%= user.email %>">
+      <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
+        Update Details
+      </button>
+    </a>
+  </div>
+  <script>
+    function redirectToDeactivateConfirmationPage() {
+      window.location.href = '/deactivate'; 
+    }
+
+
+    document.getElementById('deactivateAccountLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      redirectToDeactivateConfirmationPage();
+    });
+
+    
+    // Function to highlight the active link
+    function highlightActiveLink(linkId) {
+      const links = document.querySelectorAll('nav ul li a');
+      links.forEach(link => {
+        link.classList.remove('active');
+      });
+      document.getElementById(linkId).classList.add('active');
+    }
+
+    // Detect the current section and highlight the corresponding link
+    const currentPath = window.location.pathname;
+    if (currentPath === '/home') {
+      highlightActiveLink('homeLink');
+    } else if (currentPath === '/profile') {
+      highlightActiveLink('profileLink');
+    } else if (currentPath === '/resume-upload') {
+      highlightActiveLink('resumeUploadLink');
+    } else if (currentPath === '/confirmation') {
+      highlightActiveLink('deactivateAccountLink');
+    } else if (currentPath === '/confirm-delete') {
+      highlightActiveLink('deleteAccountLink');
+    } else if (currentPath === '/logout') {
+      highlightActiveLink('logoutLink');
+    }
+  </script>
+
+  </script>
+</body>
+</html>
+=======
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+}
+
+nav {
+  background-color: #000000;
+  color: #fff;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+}
+
+nav ul {
+  list-style: none;
+  display: flex;
+}
+
+nav ul li {
+  margin-right: 20px;
+}
+
+nav ul li a {
+  text-decoration: none;
+  color: #ffffff;
+}
+
+nav ul li a:hover {
+            color: #47c2cb;
+        }
+
+.profile-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 50vh;
+  margin-top: 30px;
+}
+
+.profile-container h1 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.profile-container p {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+.update-button {
+  background-color: #4CAF50;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  cursor: pointer;
+  border-radius: 5px;
+  font-size: 16px;
+  margin-top: 20px;
+}
+
+.update-button:hover {
+  background-color: #45a049;
+}
+
+.active {
+      color: #47c2cb; /* Change the color to your desired highlight color */
+    }
+
+</style>
+</head>
+<body>
+  <!-- Navigation Bar -->
+  <nav>
+    <ul>
+      <li><a href="/home" id="homeLink">Home</a></li>
+      <% if (user) { %>
+        <li><a href="/profile?email=<%= user.email %>" id="profileLink">Profile</a></li>
+      <% } %>
+      <li><a href="/resume-upload" id="resumeUploadLink">Upload Resume</a></li>
+      <li><a href="/confirmation" id="deactivateAccountLink">Deactivate My Account</a></li>
+      <li><a href="/confirm-delete" id="deleteAccountLink">Delete My Account</a></li>
+      <li><a href="/logout" id="logoutLink">Log Out</a></li>
+    </ul>
+  </nav>
+
+  <!-- Display user details -->
+  <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh;">
+    <h1>Welcome to Your Profile!</h1>
+    <p>First Name: <%= user.firstName %>🔒</p>
+    <p>Last Name: <%= user.lastName %>🔒</p>
+    <p>Email: <%= user.email %>🔒</p>
+    <p>Mobile Number: <%= user.mobileNumber %>🔓</p>
+    <p>Organization: <%= user.organization %>🔓</p>
+    <p>Experience: <%= user.experience %> years🔓</p>
+    <p>Skills: <%= user.skills %>🔓</p>
+    
+    <% if (user.resumeDetails && user.resumeDetails.fileName) { %>
+      <div style="display: flex; align-items: center;">
+        <p style="margin-right: 10px;">Resume: <%= user.resumeDetails.originalName %></p>
+        <a href="/uploads/<%= encodeURIComponent(user.resumeDetails.fileName) %>" target="_blank">
+          <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
+            View Resume
+          </button>
+        </a>
+
+      </div>
+    <% } else { %>
+      <p>No resume uploaded.</p>
+    <% } %>
+
+    <!-- Add a link/button to update user details -->
+    <a href="/update-profile?email=<%= user.email %>">
+      <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
+        Update Details
+      </button>
+    </a>
+  </div>
+  <script>
+    function redirectToDeactivateConfirmationPage() {
+      window.location.href = '/deactivate'; 
+    }
+
+
+    document.getElementById('deactivateAccountLink').addEventListener('click', (event) => {
+      event.preventDefault();
+      redirectToDeactivateConfirmationPage();
+    });
+
+    
+    // Function to highlight the active link
+    function highlightActiveLink(linkId) {
+      const links = document.querySelectorAll('nav ul li a');
+      links.forEach(link => {
+        link.classList.remove('active');
+      });
+      document.getElementById(linkId).classList.add('active');
+    }
+
+    // Detect the current section and highlight the corresponding link
+    const currentPath = window.location.pathname;
+    if (currentPath === '/home') {
+      highlightActiveLink('homeLink');
+    } else if (currentPath === '/profile') {
+      highlightActiveLink('profileLink');
+    } else if (currentPath === '/resume-upload') {
+      highlightActiveLink('resumeUploadLink');
+    } else if (currentPath === '/confirmation') {
+      highlightActiveLink('deactivateAccountLink');
+    } else if (currentPath === '/confirm-delete') {
+      highlightActiveLink('deleteAccountLink');
+    } else if (currentPath === '/logout') {
+      highlightActiveLink('logoutLink');
+    }
+  </script>
+
+  </script>
+</body>
+</html>
+>>>>>>> bb331430285006e0ea562773fc31276d07ed994d
