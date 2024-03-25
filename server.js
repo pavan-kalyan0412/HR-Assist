@@ -171,6 +171,10 @@ app.post('/login', (_req, res) => {
   res.render('login');
 });
 
+app.get('/admin', (_req, res) => {
+  res.render('admin-dashboard')
+});
+
 app.post('/register', (_req, res) => {
   res.sendFile('register.html', { root: __dirname });
 });
