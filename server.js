@@ -185,13 +185,22 @@ app.post('/admin-login' , async (req,res) =>{
     const newPerson = new Admin(data);
     const response = await newPerson.save();
     console.log("admin registered successfully");
-    res.status(200).send("registered successfully")
+    res.status(200).send(`
+      <p>Admin registered successfully.</p>
+      <p>Click <a href="/admin-dashboard">here</a> to go to the admin dashboard.</p>
+    `);
   } catch (error) {
     console.log(error);
     res.status(500).json({error: "Invalid server error"});
   }
 })
 
+// Define a route to serve the admin dashboard
+app.get('/admin-dashboard', (req, res) => {
+  // Assuming you have data for resumes to pass to the view
+  const resumes = []; // This should be an array of resume objects
+  res.render('admin-dashboard', { resumes });
+});
 
 app.get('/home', checkAuthentication, (req, res) => {
   const user = {
