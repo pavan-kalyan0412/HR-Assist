@@ -172,13 +172,13 @@ const Admin = mongoose.model("Admin", AdminSchema);
 
 
 // Route to serve the admin login page
-app.get('/admin-login', (_req, res) => {
-  res.sendFile('admin-login.html', { root: __dirname });
+app.get('/admin', (_req, res) => {
+  res.sendFile('admin-reg.html', { root: __dirname });
 });
 
 
 
-app.post('/admin-login' , async (req,res) =>{
+app.post('/admin-reg' , async (req,res) =>{
   try {
     const data = req.body;
 
@@ -195,12 +195,6 @@ app.post('/admin-login' , async (req,res) =>{
   }
 })
 
-// Define a route to serve the admin dashboard
-app.get('/admin-dashboard', (req, res) => {
-  // Assuming you have data for resumes to pass to the view
-  const resumes = []; // This should be an array of resume objects
-  res.render('admin-dashboard', { resumes });
-});
 
 app.get('/home', checkAuthentication, (req, res) => {
   const user = {
