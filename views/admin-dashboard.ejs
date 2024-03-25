@@ -1,39 +1,44 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* Your CSS styles here */
+  </style>
 </head>
 <body>
+  <!-- Navigation Bar -->
+  <nav>
+    <!-- Your navigation bar code here -->
+  </nav>
+
+  <!-- Admin Dashboard -->
+  <div style="padding: 20px;">
     <h1>Admin Dashboard</h1>
-    <table>
-        <thead>
-            <tr>
-                <th>User</th>
-                <th>Resume</th>
-                <th>Uploaded Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% resumes.forEach(resume => { %>
-                <tr>
-                    <td><%= resume.userEmail %></td>
-                    <td><a href="/uploads/<%= encodeURIComponent(user.resumeDetails.fileName) %>">View Resume</a></td>
-                    <td><%= formatDate(resume.uploadDate) %></td>
-                </tr>
-            <% }); %>
-        </tbody>
+    <table border="1">
+      <thead>
+        <tr>
+          <th>Uploader</th>
+          <th>Resume Name</th>
+          <th>Uploaded Date</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% resumes.forEach(resume => { %>
+          <tr>
+            <td><%= resume.uploader %></td> <!-- Assuming there's a field 'uploader' in the Resume model -->
+            <td><%= resume.originalName %></td> <!-- Assuming there's a field 'originalName' in the Resume model -->
+            <td><%= resume.uploadDate.toDateString() %></td> <!-- Assuming 'uploadDate' is a Date object -->
+            <td>
+              <a href="/uploads/<%= encodeURIComponent(resume.fileName) %>" target="_blank">View</a>
+            </td>
+          </tr>
+        <% }); %>
+      </tbody>
     </table>
-
-    <a href="/logout">Logout</a>
-
-    <script>
-        // Function to format the upload date
-        function formatDate(dateString) {
-            const date = new Date(dateString);
-            return date.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
-        }
-    </script>
+  </div>
 </body>
 </html>

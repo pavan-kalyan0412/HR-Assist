@@ -156,6 +156,50 @@ app.get('/index', (_req, res) => {
 // });
 
 
+const AdminSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    required: true,
+    unique: true
+  },
+  password: {
+    type: String,
+    required: true
+  }
+});
+
+const Admin = mongoose.model("Admin", AdminSchema);
+
+
+// Route to serve the admin login page
+app.get('/admin-login', (_req, res) => {
+  res.sendFile('admin-login.html', { root: __dirname });
+});
+
+// Dummy storage for admin credentials (Replace this with a proper database)
+let adminCredentials = {
+  email: '',
+  password: ''
+};
+
+// Route to handle storing admin credentials
+app.post('/admin-register', (req, res) => {
+  const { email, password } = req.body;
+
+  // Simple validation to ensure both email and password are provided
+  if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+  }
+
+  // Store the admin credentials (in this case, just in memory)
+  adminCredentials.email = email;
+  adminCredentials.password = password;
+
+  // Respond with success message
+  res.status(200).json({ message: 'Admin credentials stored successfully' });
+});
+
+
 
 app.get('/home', checkAuthentication, (req, res) => {
   const user = {
@@ -167,13 +211,7 @@ app.get('/home', checkAuthentication, (req, res) => {
 });
 
 
-app.post('/login', (_req, res) => {
-  res.render('login');
-});
 
-app.get('/admin', (_req, res) => {
-  res.render('admin-dashboard')
-});
 
 app.post('/register', (_req, res) => {
   res.sendFile('register.html', { root: __dirname });
