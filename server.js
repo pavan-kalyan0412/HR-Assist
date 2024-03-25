@@ -11,6 +11,7 @@ const multer = require('multer');
 const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
+const mongoose = require("mongoose");
 
 
 // Use express-session middleware
@@ -29,7 +30,7 @@ app.use(
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
-const mongoose = require("mongoose");
+
 
 // Serve static files from the current directory
 app.use(express.static(path.join(__dirname)));
@@ -39,7 +40,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-mongoose.connect("mongodb://localhost:27017/HR-Assist", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb://localhost:27017/assistance", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Connected to MongoDB");
 
