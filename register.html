@@ -167,7 +167,7 @@
       </div>
       <div class="form-group">
         <label for="skills">Skills Set (separated by commas):</label>
-        <textarea id="skills" name="skills" rows="3" cols="45" minlength="2" maxlength="60" required></textarea>
+        <textarea id="skills" name="skills" rows="3" cols="45" minlength="2" maxlength="600" required></textarea>
         <span id="skills-error" class="error-message"></span>
       </div>
       <input type="submit" id="submit-button" value="Register">
@@ -241,8 +241,8 @@
 
   if (skillsInput.value.trim() === '') {
     skillsError.textContent = 'Skills cannot be left blank.';
-  } else if (skillsInput.value.length < 2 || skillsInput.value.length > 60) {
-    skillsError.textContent = 'Skills must be between 2 and 60 characters.';
+  } else if (skillsInput.value.length < 2 || skillsInput.value.length > 650) {
+    skillsError.textContent = 'Skills must be between 2 and 650 characters.';
   }
 
   if (organizationInput.value.trim() === '') {
