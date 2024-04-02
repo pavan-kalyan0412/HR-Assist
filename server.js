@@ -40,7 +40,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-mongoose.connect("mongodb://localhost:27017/assistance", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect("mongodb://localhost:27017/HR-PROJECT", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => {
     console.log("Connected to MongoDB");
 
@@ -178,22 +178,34 @@ app.get('/admin', (_req, res) => {
 
 
 
-app.post('/admin-reg' , async (req,res) =>{
+app.post('/admin-reg', async (req, res) => {
   try {
-    const data = req.body;
-
-    const newPerson = new Admin(data);
-    const response = await newPerson.save();
-    console.log("admin registered successfully");
-    res.status(200).send(`
-      <p>Admin registered successfully.</p>
-      <p>Click <a href="/admin-dashboard">here</a> to go to the admin dashboard.</p>
-    `);
+      const data = req.body;
+      const newAdmin = new Admin(data);
+      const response = await newAdmin.save();
+      console.log("Admin registered successfully");
+      res.status(200).send(`
+          <p>Admin registered successfully.</p>
+          <p>Click <a href="/admin-register">here</a> to go to admin-dashboard.</p>
+      `);
   } catch (error) {
-    console.log(error);
-    res.status(500).json({error: "Invalid server error"});
+      console.log(error);
+      res.status(500).json({ error: "Invalid server error" });
   }
-})
+});
+
+app.get('/admin-dashboard', (req, res) => {
+  // Fetch all users from the RegisterSchema
+  User.find({})
+    .then(users => {
+      // Render the admin dashboard view with the user data
+      res.render('admin-dashboard', { users });
+    })
+    .catch(err => {
+      console.error("Error fetching user data:", err);
+      res.status(500).send("An error occurred while fetching user data.");
+    });
+});
 
 
 app.get('/home', checkAuthentication, (req, res) => {
