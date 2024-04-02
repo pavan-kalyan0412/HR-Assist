@@ -180,26 +180,24 @@ app.get('/admin', (_req, res) => {
 
 app.post('/admin-reg', async (req, res) => {
   try {
+    const { email, password } = req.body;
 
-    // Create a default admin account with dummy credentials
-    const defaultAdminData = {
-      email: 'admin@example.com',
-      password: 'adminPassword' // You can choose any password you want
-    };
-
-    const newAdmin = new Admin(defaultAdminData);
-    await newAdmin.save();
-
-    console.log("Default admin account created successfully");
+    // Check if provided credentials match the default admin account
+    if (email === 'admin@example.com' && password === 'adminPassword') {
+    console.log("New admin account created successfully");
     res.status(200).send(`
-      <p>Default admin account created successfully.</p>
-      <p>Click <a href="/admin-dashboard">here</a> to go to admin-dashboard.</p>
-    `);
+      <p>New admin account created successfully.</p>
+      <p>Click <button> <a href="/admin-dashboard">here</a> </button> to go to admin-dashboard.</p>
+    `)
+    } else{
+      res.status(404).send("this is invalid user or password")
+    }
   } catch (error) {
     console.log(error);
-    res.status(500).json({ error: "Invalid server error" });
+    res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 app.get('/admin-dashboard', (req, res) => {
   // Fetch all users from the RegisterSchema
