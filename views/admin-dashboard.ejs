@@ -103,28 +103,44 @@
     </table>
 
     <script>
-        function filterCandidates() {
-            var experienceInput = document.getElementById('experienceInput').value.toLowerCase();
-            var skillsInput = document.getElementById('skillsInput').value.toLowerCase();
-            var table = document.getElementById('candidatesTable');
-            var rows = table.getElementsByTagName('tr');
-            
-            for (var i = 1; i < rows.length; i++) {
-                var firstName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
-                var lastName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
-                var experience = rows[i].getElementsByTagName('td')[5].innerText.toLowerCase();
-                var skills = rows[i].getElementsByTagName('td')[6].innerText.toLowerCase();
-                
-                var experienceMatch = experience.includes(experienceInput);
-                var skillsMatch = skills.includes(skillsInput);
-                
-                if (experienceMatch && skillsMatch) {
-                    rows[i].style.display = '';
-                } else {
-                    rows[i].style.display = 'none';
-                }
-            }
-        }
-    </script>
+      function filterCandidates() {
+          var experienceInput = document.getElementById('experienceInput').value.toLowerCase();
+          var skillsInput = document.getElementById('skillsInput').value.toLowerCase();
+          var table = document.getElementById('candidatesTable');
+          var rows = table.getElementsByTagName('tr');
+  
+          for (var i = 1; i < rows.length; i++) {
+              var firstName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
+              var lastName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+              var experience = rows[i].getElementsByTagName('td')[5];
+              var skills = rows[i].getElementsByTagName('td')[6];
+  
+              var experienceText = experience.innerText.toLowerCase();
+              var skillsText = skills.innerText.toLowerCase();
+  
+              var experienceMatch = experienceText.includes(experienceInput);
+              var skillsMatch = skillsText.includes(skillsInput);
+  
+              if (experienceMatch && skillsMatch) {
+                  highlightKeyword(experience, experienceInput);
+                  highlightKeyword(skills, skillsInput);
+                  rows[i].style.display = '';
+              } else {
+                  rows[i].style.display = 'none';
+              }
+          }
+      }
+  
+      function highlightKeyword(element, keyword) {
+          var innerHTML = element.innerHTML;
+          var index = innerHTML.toLowerCase().indexOf(keyword);
+          if (index >= 0) {
+              var before = innerHTML.substring(0, index);
+              var after = innerHTML.substring(index + keyword.length);
+              element.innerHTML = before + '<span style="background-color: yellow;">' + keyword + '</span>' + after;
+          }
+      }
+  </script>
+  
 </body>
 </html>
