@@ -31,6 +31,22 @@
         tr:nth-child(even) {
             background-color: #f9f9f9;
         }
+        input[type="text"] {
+            width: 100%;
+            padding: 8px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
         a {
             text-decoration: none;
             color: #007bff;
@@ -42,7 +58,16 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    <table>
+
+    <!-- Search Fields -->
+    <div style="margin-bottom: 20px;">
+        <input type="text" id="experienceInput" placeholder="Search by Experience (Years)">
+        <input type="text" id="skillsInput" placeholder="Search by Skills">
+        <button onclick="filterCandidates()">Search</button>
+    </div>
+
+    <!-- Table -->
+    <table id="candidatesTable">
         <thead>
             <tr>
                 <th>First Name</th>
@@ -76,5 +101,30 @@
             <% }); %>
         </tbody>
     </table>
+
+    <script>
+        function filterCandidates() {
+            var experienceInput = document.getElementById('experienceInput').value.toLowerCase();
+            var skillsInput = document.getElementById('skillsInput').value.toLowerCase();
+            var table = document.getElementById('candidatesTable');
+            var rows = table.getElementsByTagName('tr');
+            
+            for (var i = 1; i < rows.length; i++) {
+                var firstName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
+                var lastName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+                var experience = rows[i].getElementsByTagName('td')[5].innerText.toLowerCase();
+                var skills = rows[i].getElementsByTagName('td')[6].innerText.toLowerCase();
+                
+                var experienceMatch = experience.includes(experienceInput);
+                var skillsMatch = skills.includes(skillsInput);
+                
+                if (experienceMatch && skillsMatch) {
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+        }
+    </script>
 </body>
 </html>
