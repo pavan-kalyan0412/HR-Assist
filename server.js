@@ -180,17 +180,24 @@ app.get('/admin', (_req, res) => {
 
 app.post('/admin-reg', async (req, res) => {
   try {
-      const data = req.body;
-      const newAdmin = new Admin(data);
-      const response = await newAdmin.save();
-      console.log("Admin registered successfully");
-      res.status(200).send(`
-          <p>Admin registered successfully.</p>
-          <p>Click <a href="/admin-register">here</a> to go to admin-dashboard.</p>
-      `);
+
+    // Create a default admin account with dummy credentials
+    const defaultAdminData = {
+      email: 'admin@example.com',
+      password: 'adminPassword' // You can choose any password you want
+    };
+
+    const newAdmin = new Admin(defaultAdminData);
+    await newAdmin.save();
+
+    console.log("Default admin account created successfully");
+    res.status(200).send(`
+      <p>Default admin account created successfully.</p>
+      <p>Click <a href="/admin-dashboard">here</a> to go to admin-dashboard.</p>
+    `);
   } catch (error) {
-      console.log(error);
-      res.status(500).json({ error: "Invalid server error" });
+    console.log(error);
+    res.status(500).json({ error: "Invalid server error" });
   }
 });
 

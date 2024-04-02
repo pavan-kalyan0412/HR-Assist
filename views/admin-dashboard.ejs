@@ -1,10 +1,44 @@
-<!-- admin-dashboard.ejs -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+        a:hover {
+            color: #0056b3;
+        }
+    </style>
 </head>
 <body>
     <h1>Admin Dashboard</h1>
@@ -16,7 +50,7 @@
                 <th>Email</th>
                 <th>Mobile Number</th>
                 <th>Organization</th>
-                <th>Experience</th>
+                <th>Experience (Years)</th>
                 <th>Skills</th>
                 <th>Resume</th>
             </tr>
