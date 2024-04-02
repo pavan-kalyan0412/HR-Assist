@@ -65,7 +65,13 @@
                     <td><%= user.organization %></td>
                     <td><%= user.experience %></td>
                     <td><%= user.skills %></td>
-                    <td><a href="/view-resume/<%= user.resumeDetails.fileName %>">View Resume</a></td>
+                    <td>
+                        <% if (user.resumeDetails && user.resumeDetails.fileName) { %>
+                            <a href="/view-resume/<%= user.resumeDetails.fileName %>">View Resume</a>
+                        <% } else { %>
+                            Not yet uploaded
+                        <% } %>
+                    </td>
                 </tr>
             <% }); %>
         </tbody>
