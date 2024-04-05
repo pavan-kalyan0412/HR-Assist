@@ -658,6 +658,19 @@ app.get('/logout', (req, res) => {
   });
 });
 
+app.get('/logout-admin', (req, res) => {
+  // Destroy the session to log the user out
+  req.session.destroy(err => {
+    if (err) {
+      console.error('Error while logging out:', err);
+      res.status(500).send('An error occurred while logging out.');
+    } else {
+      // Redirect the user to the login page after logout
+      res.redirect('/register.html');
+    }
+  });
+});
+
 // Assuming you have set up your Express app and static file serving
 app.get('/deactivate',checkAuthentication, (_req, res) => {
   res.sendFile('/deactivate.html', { root: __dirname });
