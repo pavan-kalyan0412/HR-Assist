@@ -65,7 +65,7 @@
 </head>
 <body>
     <h1>Admin Dashboard</h1>
-    <a href="/logout-admin" id="logoutLink">Log Out</a>
+    <button onclick="logout()">Log Out</button>
     <!-- Search Fields -->
     <div style="margin-bottom: 20px;">
         <input type="text" id="experienceInput" placeholder="Search by Experience (Years)">
@@ -168,6 +168,11 @@
                 var after = innerHTML.substring(index + keyword.length);
                 element.innerHTML = before + '<span style="background-color: yellow;">' + keyword + '</span>' + after;
             }
+        }
+
+        function logout() {
+            // Redirect to the logout endpoint or non-admin page
+            window.location.href = "/logout-admin";
         }
     </script>
   
