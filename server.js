@@ -200,18 +200,17 @@ app.post('/admin-reg', async (req, res) => {
 
 
 app.get('/admin-dashboard', (req, res) => {
-  // Fetch all users from the RegisterSchema
-  User.find({})
+  // Fetch all users from the RegisterSchema and sort them by email in ascending order
+  User.find({}).sort({ email: 1 })
     .then(users => {
-      // Render the admin dashboard view with the user data
+      // Render the admin dashboard view with the sorted user data
       res.render('admin-dashboard', { users });
     })
     .catch(err => {
-      console.error("Error fetching user data:", err);
-      res.status(500).send("An error occurred while fetching user data.");
+      console.error("Error fetching and sorting user data:", err);
+      res.status(500).send("An error occurred while fetching and sorting user data.");
     });
 });
-
 
 app.get('/home', checkAuthentication, (req, res) => {
   const user = {
