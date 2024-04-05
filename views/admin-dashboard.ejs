@@ -69,11 +69,15 @@
     <!-- Search Fields -->
     <div style="margin-bottom: 20px;">
         <input type="text" id="experienceInput" placeholder="Search by Experience (Years)">
+        <select id="sortOrder">
+            <option value="asc">Ascending</option>
+            <option value="desc">Descending</option>
+        </select>
         <input type="text" id="skillsInput" placeholder="Search by Skills">
         <button onclick="filterCandidates()">Search</button>
     </div>
-
-    <!-- Table -->
+    
+    <!-- Updated Table -->
     <table id="candidatesTable">
         <thead>
             <tr>
@@ -108,46 +112,64 @@
             <% }); %>
         </tbody>
     </table>
-
+    
     <script>
-      function filterCandidates() {
-          var experienceInput = document.getElementById('experienceInput').value.toLowerCase();
-          var skillsInput = document.getElementById('skillsInput').value.toLowerCase();
-          var table = document.getElementById('candidatesTable');
-          var rows = table.getElementsByTagName('tr');
-  
-          for (var i = 1; i < rows.length; i++) {
-              var firstName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
-              var lastName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
-              var experience = rows[i].getElementsByTagName('td')[5];
-              var skills = rows[i].getElementsByTagName('td')[6];
-  
-              var experienceText = experience.innerText.toLowerCase();
-              var skillsText = skills.innerText.toLowerCase();
-  
-              var experienceMatch = experienceText.includes(experienceInput);
-              var skillsMatch = skillsText.includes(skillsInput);
-  
-              if (experienceMatch && skillsMatch) {
-                  highlightKeyword(experience, experienceInput);
-                  highlightKeyword(skills, skillsInput);
-                  rows[i].style.display = '';
-              } else {
-                  rows[i].style.display = 'none';
-              }
-          }
-      }
-  
-      function highlightKeyword(element, keyword) {
-          var innerHTML = element.innerHTML;
-          var index = innerHTML.toLowerCase().indexOf(keyword);
-          if (index >= 0) {
-              var before = innerHTML.substring(0, index);
-              var after = innerHTML.substring(index + keyword.length);
-              element.innerHTML = before + '<span style="background-color: yellow;">' + keyword + '</span>' + after;
-          }
-      }
-  </script>
+        // Filter candidates function
+        function filterCandidates() {
+            var experienceInput = document.getElementById('experienceInput').value.toLowerCase();
+            var sortOrder = document.getElementById('sortOrder').value;
+            var skillsInput = document.getElementById('skillsInput').value.toLowerCase();
+            var table = document.getElementById('candidatesTable');
+            var rows = table.getElementsByTagName('tr');
+    
+            for (var i = 1; i < rows.length; i++) {
+                var firstName = rows[i].getElementsByTagName('td')[0].innerText.toLowerCase();
+                var lastName = rows[i].getElementsByTagName('td')[1].innerText.toLowerCase();
+                var experience = rows[i].getElementsByTagName('td')[5];
+                var skills = rows[i].getElementsByTagName('td')[6];
+    
+                var experienceText = experience.innerText.toLowerCase();
+                var skillsText = skills.innerText.toLowerCase();
+    
+                var experienceMatch = experienceText.includes(experienceInput);
+                var skillsMatch = skillsText.includes(skillsInput);
+    
+                if (experienceMatch && skillsMatch) {
+                    highlightKeyword(experience, experienceInput);
+                    highlightKeyword(skills, skillsInput);
+                    rows[i].style.display = '';
+                } else {
+                    rows[i].style.display = 'none';
+                }
+            }
+            
+            // Sorting based on experience
+            var rowsArray = Array.prototype.slice.call(rows, 1);
+            rowsArray.sort(function(a, b) {
+                var aValue = parseFloat(a.getElementsByTagName('td')[5].innerText);
+                var bValue = parseFloat(b.getElementsByTagName('td')[5].innerText);
+                if (sortOrder === 'asc') {
+                    return aValue - bValue;
+                } else {
+                    return bValue - aValue;
+                }
+            });
+            
+            for (var i = 0; i < rowsArray.length; i++) {
+                table.appendChild(rowsArray[i]);
+            }
+        }
+    
+        function highlightKeyword(element, keyword) {
+            var innerHTML = element.innerHTML;
+            var index = innerHTML.toLowerCase().indexOf(keyword);
+            if (index >= 0) {
+                var before = innerHTML.substring(0, index);
+                var after = innerHTML.substring(index + keyword.length);
+                element.innerHTML = before + '<span style="background-color: yellow;">' + keyword + '</span>' + after;
+            }
+        }
+    </script>
   
 </body>
 </html>
