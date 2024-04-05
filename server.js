@@ -666,7 +666,7 @@ app.get('/logout-admin', (req, res) => {
       res.status(500).send('An error occurred while logging out.');
     } else {
       // Redirect the user to the login page after logout
-      res.redirect('/register.html');
+      res.redirect('/admin-reg.html');
     }
   });
 });
