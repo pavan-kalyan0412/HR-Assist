@@ -171,6 +171,17 @@ const AdminSchema = new mongoose.Schema({
 const Admin = mongoose.model("Admin", AdminSchema);
 
 
+const isAuthenticated = (req, res, next) => {
+  // Check if user is logged in by checking the session
+  if (req.session && req.session.admin) {
+    // User is authenticated, proceed to the next middleware
+    next();
+  } else {
+    // User is not authenticated, redirect to login page
+    res.redirect('/admin-reg.html');
+  }
+};
+
 // Route to serve the admin login page
 app.get('/admin', (_req, res) => {
   res.sendFile('admin-reg.html', { root: __dirname });
@@ -199,7 +210,7 @@ app.post('/admin-reg', async (req, res) => {
 });
 
 
-app.get('/admin-dashboard', (req, res) => {
+app.get('/admin-dashboard', isAuthenticated, (req, res) => {
   // Fetch all users from the RegisterSchema and sort them by email in ascending order
   User.find({}).sort({ email: 1 })
     .then(users => {
@@ -657,6 +668,9 @@ app.get('/logout', (req, res) => {
     }
   });
 });
+
+
+
 
 app.get('/logout-admin', (req, res) => {
   // Destroy the session to log the user out
