@@ -178,7 +178,7 @@ const isAuthenticated = (req, res, next) => {
     next();
   } else {
     // User is not authenticated, redirect to login page
-    res.redirect('/admin-reg.html');
+    res.redirect('/admin');
   }
 };
 
@@ -195,11 +195,10 @@ app.post('/admin-reg', async (req, res) => {
 
     // Check if provided credentials match the default admin account
     if (email === 'admin@example.com' && password === 'adminPassword') {
+        // Set admin session
+      req.session.admin = true;
     console.log("New admin account created successfully");
-    res.status(200).send(`
-      <p>New admin account created successfully.</p>
-      <p>Click <button> <a href="/admin-dashboard">here</a> </button> to go to admin-dashboard.</p>
-    `)
+    res.status(200).redirect('/admin-dashboard');
     } else{
       res.status(404).send("this is invalid user or password")
     }
@@ -680,7 +679,7 @@ app.get('/logout-admin', (req, res) => {
       res.status(500).send('An error occurred while logging out.');
     } else {
       // Redirect the user to the login page after logout
-      res.redirect('/admin-reg.html');
+      res.redirect('/admin');
     }
   });
 });
