@@ -12,6 +12,7 @@ const path = require('path');
 const fs = require('fs');
 const crypto = require('crypto');
 const mongoose = require("mongoose");
+require('dotenv').config();
 
 
 // Use express-session middleware
@@ -40,7 +41,7 @@ app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
 
-mongoose.connect("mongodb://localhost:27017/HR-PROJECT", { useNewUrlParser: true, useUnifiedTopology: true })
+mongoose.connect(process.env.MONGO_DB_URL)
   .then(() => {
     console.log("Connected to MongoDB");
 
@@ -908,13 +909,13 @@ function sendPasswordResetEmail(email, resetToken) {
   const transporter = nodemailer.createTransport({
     service: 'gmail',
     auth: {
-      user: 'pk309356@gmail.com',
-      pass: 'hyqinpzfpfykhssh'
+      user: process.env.user,
+      pass: process.env.pass
     }
   });
 
   const mailOptions = {
-    from: 'pk309356@gmail.com',
+    from: process.env.user,
     to: email,
     subject: 'Password Reset',
     html: `
