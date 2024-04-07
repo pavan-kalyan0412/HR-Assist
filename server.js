@@ -13,6 +13,7 @@ const fs = require('fs');
 const crypto = require('crypto');
 const mongoose = require("mongoose");
 require('dotenv').config();
+const User = require('./models/User')
 
 
 // Use express-session middleware
@@ -52,50 +53,6 @@ mongoose.connect(process.env.MONGO_DB_URL)
     console.error("Error connecting to MongoDB:", error);
   });
 
-
-const RegisterSchema = new mongoose.Schema({
-  firstName: String,
-  lastName: String,
-  email: String,
-  password: String,
-  resetToken: String,
-  mobileNumber: String,
-  organization: String,
-  experience: Number,
-  skills: String,
-  isActive: { type: Boolean, default: true }, // New field for account activation status
-  resumeDetails: {
-    fileName: String,
-    originalName: String,
-    uploadDate: Date,
-    folderPath: String,
-  }
-});
-
-RegisterSchema.pre('save', function (next) {
-  const user = this;
-
-  if (!user.isModified('password')) {
-    return next();
-  }
-
-  bcrypt.genSalt(saltRounds, (err, salt) => {
-    if (err) {
-      return next(err);
-    }
-
-    bcrypt.hash(user.password, salt, (err, hash) => {
-      if (err) {
-        return next(err);
-      }
-
-      user.password = hash;
-      next();
-    });
-  });
-});
-
-const User = mongoose.model("User", RegisterSchema);
 
 // Multer configuration to store the uploaded resumes in the 'uploads' directory
 // Update the destination function for multer.diskStorage
