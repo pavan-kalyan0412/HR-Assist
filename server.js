@@ -13,7 +13,8 @@ const fs = require('fs');
 const crypto = require('crypto');
 const mongoose = require("mongoose");
 require('dotenv').config();
-const User = require('./models/User')
+const User = require('./models/User');
+const admin = require('./models/admin')
 
 
 // Use express-session middleware
@@ -113,20 +114,6 @@ app.get('/index', (_req, res) => {
 //   res.render('homepage',{user});
 // });
 
-
-const AdminSchema = new mongoose.Schema({
-  email: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  password: {
-    type: String,
-    required: true
-  }
-});
-
-const Admin = mongoose.model("Admin", AdminSchema);
 
 
 const isAuthenticated = (req, res, next) => {
