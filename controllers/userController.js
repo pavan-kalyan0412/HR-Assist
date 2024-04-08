@@ -1,60 +1,62 @@
-const User = require('../models/User'); 
+const User = require('../models/User')
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
-const path = require('path');
 const fs = require('fs');
 const multer = require('multer');
+const path = require('path');
+require('dotenv').config();
+
 
 // Multer configuration to store the uploaded resumes in the 'uploads' directory
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-      const uploadFolder = path.join(__dirname, `uploads`);
+// const storage = multer.diskStorage({
+//     destination: function (_req, _file, cb) {
+//       const uploadFolder = path.join(__dirname, `uploads`);
   
-      // Create the folder if it doesn't exist
-      fs.mkdir(uploadFolder, { recursive: true }, (err) => {
-        if (err) {
-          console.error('Error creating upload folder:', err);
-        }
-        cb(null, uploadFolder);
-      });
-    },
-    filename: function (req, file, cb) {
-      cb(null, Date.now() + '-' + path.extname(file.originalname));
-    }
-  });
+//       // Create the folder if it doesn't exist
+//       fs.mkdir(uploadFolder, { recursive: true }, (err) => {
+//         if (err) {
+//           console.error('Error creating upload folder:', err);
+//         }
+//         cb(null, uploadFolder);
+//       });
+//     },
+//     filename: function (_req, file, cb) {
+//       cb(null, Date.now() + '-' + path.extname(file.originalname));
+//     }
+//   });
   
   
-  // File type filter to accept only PDF files
-  const fileFilter = (req, file, cb) => {
-      const allowedFileTypes = ['.pdf'];
-      const fileExtension = path.extname(file.originalname).toLowerCase();
+//   // File type filter to accept only PDF files
+//   const fileFilter = (_req, file, cb) => {
+//       const allowedFileTypes = ['.pdf'];
+//       const fileExtension = path.extname(file.originalname).toLowerCase();
     
-      if (allowedFileTypes.includes(fileExtension)) {
-        cb(null, true);
-      } else {
-        cb(new Error('Only PDF files are allowed.'));
-      }
-    };
+//       if (allowedFileTypes.includes(fileExtension)) {
+//         cb(null, true);
+//       } else {
+//         cb(new Error('Only PDF files are allowed.'));
+//       }
+//     };
   
   
-    const upload = multer({ storage: storage, fileFilter: fileFilter });
+//     const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-module.exports = {
-    upload: upload
-};
+// module.exports = {
+//     upload: upload
+// };
 
-//--------------added---------------
-//app.get('/index', (_req, res) => {
+// //--------------added---------------
+// //app.get('/index', (_req, res) => {
 exports.index = (_req, res) => {
-    res.sendFile('index.html', { root: __dirname });
+    res.sendFile('index.html', { root: 'public' })
   };
 
 
 
-  //--------------added-------------
-  // app.get('/index', (_req, res) => {
+//   //--------------added-------------
+//app.post('/register', (_req, res) => {
   exports.register = (_req, res) => {
-    res.sendFile('register.html', { root: __dirname });
+    res.sendFile('register.html', { root: 'public' })
   };
 
 
@@ -107,10 +109,16 @@ exports.checkAccountStatus = (req, res, next) => {
       lastName: req.session.lastName,   // Use the stored last name
     };
     res.render('homepage', { user });
+    console.log('ckdeddddddddddddddd')
   };
 
 
-
+//-----------------added-------------
+//app.get('/homepage', checkAuthentication,(req, res) => {
+  exports.homepage = (req,res) =>{
+    const user = { email: req.session.email };
+  res.render('homepage',{user});
+  };
 
 //===================added============//
 //-----------------post('/home')----------------//
@@ -118,6 +126,7 @@ exports.handleLogin = (req, res) => {
     req.session.loggedIn = true; // Set the loggedIn state in the session
     req.session.email = req.body.email; // Store user's email in the session
   const { email, password } = req.body;
+  console.log("clocked on login button")
 
   User.findOne({ email })
     .then(user => {
@@ -187,7 +196,7 @@ exports.handleRegistration = (req, res) => {
   
         const myData = new User(req.body);
         myData.save()
-          .then(item => {
+          .then(_item => {
             const response = `
               <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
                 <p>You have been registered!</p>
@@ -210,7 +219,7 @@ exports.handleRegistration = (req, res) => {
 //-------------added------------
 //app.get('/forgot-password', checkAuthentication, (_req, res) => {
 exports.forgotPassword = (_req, res) => {
-    res.sendFile('forgot-password.html', { root: __dirname });
+  res.sendFile('forgot-password.html', { root: 'public' })
   };
 
 
@@ -264,7 +273,7 @@ exports.handleForgotPassword = (req, res) => {
         }
   
         // Render the reset-password.html page
-        res.sendFile(path.join(__dirname, 'reset-password.html'));
+        res.sendFile(__dirname + '/public//reset-password.html');
       })
       .catch(err => {
         console.error("Error validating email and reset token:", err);
@@ -445,6 +454,7 @@ exports.updateProfile = (req, res) => {
   };
 
   //--------------------------------
+  //app.post('/upload',checkAccountStatus, upload.single('resume'), (req, res) => {
 exports.handleResumeUpload = (req, res) => {
     if (!req.file) {
       return res.status(400).send('No file was uploaded.');
@@ -511,7 +521,7 @@ exports.UserLogout = (req, res) => {
   //--------added---------------
   //app.get('/deactivate',checkAuthentication, (_req, res) => {
   exports.deactivate = (_req, res) => {
-    res.sendFile('/deactivate.html', { root: __dirname });
+    res.sendFile('deactivate.html', { root: 'public' })
   };
 
 //----------added-------------------
@@ -546,7 +556,7 @@ exports.handleDeactivate = (req, res) => {
   
         // Save the updated user document in the database
         user.save()
-          .then(updatedUser => {
+          .then(_updatedUser => {
             // Provide a link to reactivate the account
             const response = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
