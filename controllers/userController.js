@@ -5,9 +5,10 @@ const fs = require('fs');
 const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
+const nodemailer = require('nodemailer');
 
 
-// Multer configuration to store the uploaded resumes in the 'uploads' directory
+// // Multer configuration to store the uploaded resumes in the 'uploads' directory
 // const storage = multer.diskStorage({
 //     destination: function (_req, _file, cb) {
 //       const uploadFolder = path.join(__dirname, `uploads`);
@@ -41,9 +42,72 @@ require('dotenv').config();
   
 //     const upload = multer({ storage: storage, fileFilter: fileFilter });
 
-// module.exports = {
-//     upload: upload
-// };
+
+
+
+  // Function to send reactivation confirmation email
+  exports.sendReactivationConfirmationEmail = function (email) {
+    const reactivationLink = `http://localhost:3000/reactivate-account?email=${encodeURIComponent(email)}`;
+  
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: 'process.env.user', // Replace with your Gmail email address
+        pass: 'process.env.pass' // Replace with your Gmail password or an app-specific password
+      }
+    });
+  
+    const mailOptions = {
+      from: 'process.env.user', // Replace with your Gmail email address
+      to: email,
+      subject: 'Account Reactivation',
+      html: `
+        <p>Your account has been reactivated.</p>
+        <p>Click the following link to log in to your account:</p>
+        <a href="${reactivationLink}">Log in</a>
+      `
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Reactivation email sent:', info.response);
+      }
+    });
+  }
+  
+  
+  exports.sendPasswordResetEmail = function (email, resetToken) {
+    const resetLink = `http://localhost:3000/reset-password?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`;
+  
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: {
+        user: process.env.user,
+        pass: process.env.pass
+      }
+    });
+  
+    const mailOptions = {
+      from: process.env.user,
+      to: email,
+      subject: 'Password Reset',
+      html: `
+        <p>Please click the below button to reset your password:</p>
+        <a href="${resetLink}">Reset Password</a>
+      `
+    };
+  
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('Error sending email:', error);
+      } else {
+        console.log('Email sent:', info.response);
+      }
+    });
+  }
+
 
 // //--------------added---------------
 // //app.get('/index', (_req, res) => {
@@ -240,7 +304,7 @@ exports.handleForgotPassword = (req, res) => {
         user.resetToken = resetToken;
         user.save()
           .then(() => {
-            sendPasswordResetEmail(user.email, resetToken);
+            exports.sendPasswordResetEmail(user.email, resetToken);
             const response = `
               <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
                 <p>Password reset link sent to your email.</p>
@@ -698,3 +762,5 @@ exports.handleDeactivate = (req, res) => {
         res.status(500).send("An error occurred while deleting the account.");
       });
   };
+
+

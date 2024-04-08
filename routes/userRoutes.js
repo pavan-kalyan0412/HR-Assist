@@ -1,6 +1,44 @@
 const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
+const multer = require('multer');
+
+
+// Multer configuration to store the uploaded resumes in the 'uploads' directory
+const storage = multer.diskStorage({
+    destination: function (_req, _file, cb) {
+      const uploadFolder = path.join(__dirname, `uploads`);
+  
+      // Create the folder if it doesn't exist
+      fs.mkdir(uploadFolder, { recursive: true }, (err) => {
+        if (err) {
+          console.error('Error creating upload folder:', err);
+        }
+        cb(null, uploadFolder);
+      });
+    },
+    filename: function (_req, file, cb) {
+      cb(null, Date.now() + '-' + path.extname(file.originalname));
+    }
+  });
+  
+  
+  // File type filter to accept only PDF files
+  const fileFilter = (_req, file, cb) => {
+      const allowedFileTypes = ['.pdf'];
+      const fileExtension = path.extname(file.originalname).toLowerCase();
+    
+      if (allowedFileTypes.includes(fileExtension)) {
+        cb(null, true);
+      } else {
+        cb(new Error('Only PDF files are allowed.'));
+      }
+    };
+  
+  
+    const upload = multer({ storage: storage, fileFilter: fileFilter });
+
+
 
 // Example routes using controller functions
 router.get('/index', userController.index);
@@ -18,7 +56,7 @@ router.get('/view-resume/:fileName', userController.checkAuthentication, userCon
 router.get('/update-profile', userController.checkAuthentication, userController.checkAccountStatus, userController.updateProfile);
 router.post('/update-profile', userController.checkAccountStatus, userController.updateProfileDetails);
 router.get('/resume-upload', userController.checkAuthentication, userController.checkAccountStatus, userController.resumeUpload);
-// router.post('/upload', userController.checkAuthentication, userController.checkAccountStatus, userController.upload.single('resume'), userController.handleResumeUpload);
+router.post('/upload', userController.checkAuthentication, userController.checkAccountStatus, userController.upload.single('resume'), userController.handleResumeUpload);
 router.get('/logout', userController.UserLogout);
 router.get('/deactivate', userController.checkAuthentication, userController.deactivate);
 router.post('/deactivate-account', userController.checkAuthentication, userController.handleDeactivate);

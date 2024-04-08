@@ -809,10 +809,10 @@ const isAuthenticated = (req, res, next) => {
 // //     });
 // // });
 
-// // app.get('/*', (_req, res) => {
-// //   // Redirect to the login page
-// //   res.redirect('/login.html');
-// // });
+app.get('/*', (_req, res) => {
+  // Redirect to the login page
+  res.redirect('/login.html');
+});
 
 // app.use((req, res) => {
 //   res.redirect('/login.html');
