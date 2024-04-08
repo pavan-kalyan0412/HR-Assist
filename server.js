@@ -3,14 +3,12 @@ const express = require("express");
 const app = express();
 const port = 3000;
 const bodyParser = require('body-parser');
-const bcrypt = require('bcrypt');
-const saltRounds = 10;
+
 const nodemailer = require('nodemailer');
 const session = require('express-session');
 const multer = require('multer');
 const path = require('path');
-const fs = require('fs');
-const crypto = require('crypto');
+
 const mongoose = require("mongoose");
 require('dotenv').config();
 const User = require('./models/User');
