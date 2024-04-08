@@ -2,47 +2,9 @@ const User = require('../models/User')
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const fs = require('fs');
-const multer = require('multer');
 const path = require('path');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
-
-
-// // Multer configuration to store the uploaded resumes in the 'uploads' directory
-// const storage = multer.diskStorage({
-//     destination: function (_req, _file, cb) {
-//       const uploadFolder = path.join(__dirname, `uploads`);
-  
-//       // Create the folder if it doesn't exist
-//       fs.mkdir(uploadFolder, { recursive: true }, (err) => {
-//         if (err) {
-//           console.error('Error creating upload folder:', err);
-//         }
-//         cb(null, uploadFolder);
-//       });
-//     },
-//     filename: function (_req, file, cb) {
-//       cb(null, Date.now() + '-' + path.extname(file.originalname));
-//     }
-//   });
-  
-  
-//   // File type filter to accept only PDF files
-//   const fileFilter = (_req, file, cb) => {
-//       const allowedFileTypes = ['.pdf'];
-//       const fileExtension = path.extname(file.originalname).toLowerCase();
-    
-//       if (allowedFileTypes.includes(fileExtension)) {
-//         cb(null, true);
-//       } else {
-//         cb(new Error('Only PDF files are allowed.'));
-//       }
-//     };
-  
-  
-//     const upload = multer({ storage: storage, fileFilter: fileFilter });
-
-
 
 
   // Function to send reactivation confirmation email

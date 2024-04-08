@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const userController = require('../controllers/userController');
 const multer = require('multer');
-
+const path = require('path');
+const fs = require('fs');
 
 // Multer configuration to store the uploaded resumes in the 'uploads' directory
 const storage = multer.diskStorage({
@@ -56,7 +57,7 @@ router.get('/view-resume/:fileName', userController.checkAuthentication, userCon
 router.get('/update-profile', userController.checkAuthentication, userController.checkAccountStatus, userController.updateProfile);
 router.post('/update-profile', userController.checkAccountStatus, userController.updateProfileDetails);
 router.get('/resume-upload', userController.checkAuthentication, userController.checkAccountStatus, userController.resumeUpload);
-router.post('/upload', userController.checkAuthentication, userController.checkAccountStatus, userController.upload.single('resume'), userController.handleResumeUpload);
+router.post('/upload', userController.checkAuthentication, userController.checkAccountStatus, upload.single('resume'), userController.handleResumeUpload);
 router.get('/logout', userController.UserLogout);
 router.get('/deactivate', userController.checkAuthentication, userController.deactivate);
 router.post('/deactivate-account', userController.checkAuthentication, userController.handleDeactivate);
