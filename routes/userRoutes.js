@@ -8,7 +8,7 @@ const fs = require('fs');
 // Multer configuration to store the uploaded resumes in the 'uploads' directory
 const storage = multer.diskStorage({
     destination: function (_req, _file, cb) {
-      const uploadFolder = path.join(__dirname, `uploads`);
+      const uploadFolder = path.join(__dirname, '..', 'uploads'); 
   
       // Create the folder if it doesn't exist
       fs.mkdir(uploadFolder, { recursive: true }, (err) => {
@@ -57,11 +57,11 @@ router.get('/view-resume/:fileName', userController.checkAuthentication, userCon
 router.get('/update-profile', userController.checkAuthentication, userController.checkAccountStatus, userController.updateProfile);
 router.post('/update-profile', userController.checkAccountStatus, userController.updateProfileDetails);
 router.get('/resume-upload', userController.checkAuthentication, userController.checkAccountStatus, userController.resumeUpload);
-router.post('/upload', userController.checkAuthentication, userController.checkAccountStatus, upload.single('resume'), userController.handleResumeUpload);
+router.post('/upload', userController.checkAccountStatus, upload.single('resume'), userController.handleResumeUpload);
 router.get('/logout', userController.UserLogout);
 router.get('/deactivate', userController.checkAuthentication, userController.deactivate);
-router.post('/deactivate-account', userController.checkAuthentication, userController.handleDeactivate);
-router.get('/reactivate-account', userController.reactivate);
+router.post('/deactivate-account', userController.handleDeactivate);
+router.get('/reactivate-account',userController.checkAuthentication, userController.reactivate);
 router.post('/reactivate-account', userController.handleReactivate);
 router.get('/confirm-delete', userController.checkAuthentication, userController.checkAccountStatus, userController.confirmDelete);
 router.post('/delete-account', userController.checkAuthentication, userController.checkAccountStatus, userController.handleDelete);
