@@ -3,16 +3,13 @@ const express = require("express");
 const port = 3000;
 const bodyParser = require('body-parser');
 const app = express();
-const nodemailer = require('nodemailer');
 const session = require('express-session');
-const multer = require('multer');
 const path = require('path');
 
 const mongoose = require("mongoose");
 require('dotenv').config();
 const User = require('./models/User');
-const admin = require('./models/admin')
-
+const adminRoutes = require('./routes/adminRoutes');
 const userRoutes = require('./routes/userRoutes');
 
 
@@ -45,12 +42,19 @@ app.set('views', path.join(__dirname, 'views'));
 // Routes
 app.use('/', userRoutes);
 
+app.use('/', adminRoutes);
+
 mongoose.connect(process.env.MONGO_DB_URL)
   .then(() => {
     console.log("Connected to MongoDB");
 
-    // Create an index on the 'email' field to improve query performance
-    User.collection.createIndex({ email: 1 });
+    // Check if the index exists before creating it
+    User.collection.indexExists("email_1", (err, result) => {
+      if (!result) {
+        // If the index doesn't exist, create it
+        User.collection.createIndex({ email: 1 });
+      }
+    });
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);

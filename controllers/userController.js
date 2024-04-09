@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 const nodemailer = require('nodemailer');
+const saltRounds = 10;
 
 
   // Function to send reactivation confirmation email
@@ -71,6 +72,45 @@ const nodemailer = require('nodemailer');
   }
 
 
+  // Controller methods
+exports.checkAuthentication = (req, res, next) => {
+  if (!req.session.loggedIn) {
+    return res.redirect('/login.html');
+  }
+  next();
+};
+
+//----------------2------------//
+exports.checkAccountStatus = (req, res, next) => {
+  const email = req.session.email;
+
+  User.findOne({ email })
+  .then(user => {
+    if (!user) {
+      console.log("User not found for email:", email);
+      return res.status(404).send("User not found.");
+    }
+
+    if (!user.isActive) {
+      // Account is deactivated, show login page with deactivation message and reactivation link
+      const response = `
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
+          <p>Your account has been deactivated. Click <a href="/reactivate-account">here</a> to reactivate your account.</p>
+        </div>
+      `;
+      return res.status(401).send(response);
+    }
+
+    // If the account is active, proceed to the next middleware or route handler
+    next();
+  })
+  .catch(err => {
+    console.error("Error fetching user data:", err);
+    res.status(500).send("An error occurred while fetching user data.");
+  });
+}
+
+
 // //--------------added---------------
 // //app.get('/index', (_req, res) => {
 exports.index = (_req, res) => {
@@ -85,45 +125,6 @@ exports.index = (_req, res) => {
     res.sendFile('register.html', { root: 'public' })
   };
 
-
-
-// Controller methods
-exports.checkAuthentication = (req, res, next) => {
-    if (!req.session.loggedIn) {
-      return res.redirect('/login.html');
-    }
-    next();
-  };
-
-//----------------2------------//
-exports.checkAccountStatus = (req, res, next) => {
-    const email = req.session.email;
-  
-    User.findOne({ email })
-    .then(user => {
-      if (!user) {
-        console.log("User not found for email:", email);
-        return res.status(404).send("User not found.");
-      }
-
-      if (!user.isActive) {
-        // Account is deactivated, show login page with deactivation message and reactivation link
-        const response = `
-          <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
-            <p>Your account has been deactivated. Click <a href="/reactivate-account">here</a> to reactivate your account.</p>
-          </div>
-        `;
-        return res.status(401).send(response);
-      }
-
-      // If the account is active, proceed to the next middleware or route handler
-      next();
-    })
-    .catch(err => {
-      console.error("Error fetching user data:", err);
-      res.status(500).send("An error occurred while fetching user data.");
-    });
-}
 
 
   //---------------------added-------------------//---------get
@@ -149,55 +150,57 @@ exports.checkAccountStatus = (req, res, next) => {
 //===================added============//
 //-----------------post('/home')----------------//
 exports.handleLogin = (req, res) => {
-    req.session.loggedIn = true; // Set the loggedIn state in the session
-    req.session.email = req.body.email; // Store user's email in the session
+  // Set the loggedIn state in the session
+  req.session.loggedIn = true;
+  // Store user's email in the session
+  req.session.email = req.body.email;
+  
+  // Extract email and password from request body
   const { email, password } = req.body;
-  console.log("clocked on login button")
 
+  // Find the user in the database by email
   User.findOne({ email })
     .then(user => {
+      // If user not found, show invalid email or password message
       if (!user) {
-        // User not found, show login page with error message
-        const response = `
+        return res.status(401).send(`
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
             <p>Invalid email or password.</p>
             <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;" onclick="location.href='/login.html'">Login</button>
           </div>
-        `;
-        return res.status(401).send(response);
+        `);
       }
 
+      // If the account is deactivated, show deactivation message
       if (!user.isActive) {
-        // Account is deactivated, show login page with deactivation message and reactivation link
-        const response = `
+        return res.status(401).send(`
           <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
             <p>Your account has been deactivated. Click <a href="/reactivate-account">here</a> to reactivate your account.</p>
           </div>
-        `;
-        return res.status(401).send(response);
+        `);
       }
 
+      // Compare the provided password with the hashed password in the database
       bcrypt.compare(password, user.password, (err, result) => {
         if (err) {
           console.error("Error comparing passwords:", err);
           return res.status(500).send("An error occurred while comparing passwords");
         }
 
+        // If passwords match, set session variables and render homepage
         if (result) {
-          // Set the user's first name and last name in the session
           req.session.email = email;
           req.session.firstName = user.firstName; 
           req.session.lastName = user.lastName;   
           return res.render('homepage', { user });
         } else {
-          // Invalid password, show login page with error message
-          const response = `
+          // If passwords don't match, show invalid email or password message
+          return res.status(401).send(`
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
               <p>Invalid email or password.</p>
               <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;" onclick="location.href='/login.html'">Login</button>
             </div>
-          `;
-          return res.status(401).send(response);
+          `);
         }
       });
     })
@@ -206,6 +209,7 @@ exports.handleLogin = (req, res) => {
       res.status(500).send("An error occurred during login");
     });
 };
+
 
   
 
@@ -299,7 +303,7 @@ exports.handleForgotPassword = (req, res) => {
         }
   
         // Render the reset-password.html page
-        res.sendFile(__dirname + '/public//reset-password.html');
+        res.sendFile('reset-password.html', { root: 'public' })
       })
       .catch(err => {
         console.error("Error validating email and reset token:", err);
