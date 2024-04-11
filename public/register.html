@@ -13,7 +13,7 @@
       padding: 20px;
       border: 1px solid #20bc3c; /* Blue border */
       border-radius: 5px;
-      background-color: #75baab; /* Blue background */
+      background-color: #0e6653; /* Blue background */
     }
     
     .phone-input {
@@ -321,8 +321,8 @@ document.getElementById('skills').addEventListener('input', function() {
 
   if (this.value.trim() === '') {
     skillsError.textContent = 'Note: Skills cannot be left blank.';
-  } else if (this.value.length < 2 || this.value.length > 60) {
-    skillsError.textContent = 'Note: Skills must be between 2 and 60 characters.';
+  } else if (this.value.length < 2 || this.value.length > 600) {
+    skillsError.textContent = 'Note: Skills must be between 2 and 600 characters.';
   } else {
     skillsError.textContent = '';
   }
