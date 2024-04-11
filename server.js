@@ -513,10 +513,19 @@ mongoose.connect(process.env.MONGO_DB_URL)
           res.status(500).send("An error occurred while fetching user data.");
         });
     });
+
+
   app.get('/resume-upload', checkAuthentication, checkAccountStatus, (req, res) => {
     const email = req.session.email; 
-    res.render('resume-upload', { email }); 
+    const user = {
+      email: req.session.email,
+      firstName: req.session.firstName, // Use the stored first name
+      lastName: req.session.lastName,   // Use the stored last name
+    };
+    res.render('resume-upload', { email, user }); 
   });
+
+
   app.post('/upload',checkAccountStatus, upload.single('resume'), (req, res) => {
     if (!req.file) {
       return res.status(400).send('No file was uploaded.');

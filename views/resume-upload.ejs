@@ -107,6 +107,9 @@
     <nav>
         <ul>
             <li><a href="/home">Home</a></li>
+            <% if (user) { %>
+              <li><a href="/profile?email=<%= user.email %>" id="profileLink">Profile</a></li>
+            <% } %>
             <li><a href="javascript:void(0);" onclick="window.history.back();">Back</a></li>
             <li><a href="/confirmation" id="deactivateAccountLink">Deactivate My Account</a></li>
             <li><a href="/confirm-delete" id="deleteAccountLink">Delete My Account</a></li>
