@@ -837,14 +837,14 @@ mongoose.connect(process.env.MONGO_DB_URL)
 
 
 
-// app.get('/*', (_req, res) => {
-//   // Redirect to the login page
-//   res.redirect('/login.html');
-// });
+app.get('/*', (_req, res) => {
+  // Redirect to the login page
+  res.redirect('/login.html');
+});
 
-// app.use((req, res) => {
-//   res.redirect('/login.html');
-// });
+app.use((req, res) => {
+  res.redirect('/login.html');
+});
 
 
 // Add the following middleware to disable caching for all responses
