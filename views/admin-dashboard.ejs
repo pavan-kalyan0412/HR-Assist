@@ -103,7 +103,7 @@
                     <td><%= user.skills %></td>
                     <td>
                         <% if (user.resumeDetails && user.resumeDetails.fileName) { %>
-                            <a href="/uploads/<%= user.resumeDetails.fileName %>" target="_blank">View Resume</a>
+                            <a href="/view-resume/<%= user.resumeDetails.fileName %>" target="_blank">View Resume</a>
                         <% } else { %>
                             Not yet uploaded
                         <% } %>

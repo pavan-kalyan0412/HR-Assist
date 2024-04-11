@@ -107,7 +107,7 @@ nav ul li a:hover {
     <% if (user.resumeDetails && user.resumeDetails.fileName) { %>
       <div style="display: flex; align-items: center;">
         <p style="margin-right: 10px;">Resume: <%= user.resumeDetails.originalName %></p>
-        <a href="/uploads/<%= encodeURIComponent(user.resumeDetails.fileName) %>" target="_blank">
+        <a href="/view-resume/<%= encodeURIComponent(user.resumeDetails.fileName) %>" target="_blank">
           <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;">
             View Resume
           </button>
