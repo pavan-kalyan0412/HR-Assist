@@ -764,18 +764,20 @@ mongoose.connect(process.env.MONGODB_URL_ATLAS)
   app.use((req, res) => {
     res.redirect('/login.html');
   });
+
+
   // Function to send reactivation confirmation email
   function sendReactivationConfirmationEmail(email) {
-    const reactivationLink = `http://localhost:3000/reactivate-account?email=${encodeURIComponent(email)}`;
+    const reactivationLink = `https://hr-assist.onrender.com/reactivate-account?email=${encodeURIComponent(email)}`;
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
-        user: 'pavankalyan.yes@gmail.com', // Replace with your Gmail email address
-        pass: 'hxbfkodrhqsducwc' // Replace with your Gmail password or an app-specific password
+        user: 'process.env.user', // Replace with your Gmail email address
+        pass: 'process.env.pass' // Replace with your Gmail password or an app-specific password
       }
     });
     const mailOptions = {
-      from: 'pavankalyan.yes@gmail.com', // Replace with your Gmail email address
+      from: 'process.env.user', // Replace with your Gmail email address
       to: email,
       subject: 'Account Reactivation',
       html: `
@@ -793,7 +795,7 @@ mongoose.connect(process.env.MONGODB_URL_ATLAS)
     });
   }
   function sendPasswordResetEmail(email, resetToken) {
-    const resetLink = `http://localhost:3000/reset-password?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`;
+    const resetLink = `https://hr-assist.onrender.com/reset-password?email=${encodeURIComponent(email)}&token=${encodeURIComponent(resetToken)}`;
     const transporter = nodemailer.createTransport({
       service: 'gmail',
       auth: {
