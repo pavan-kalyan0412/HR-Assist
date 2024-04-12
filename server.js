@@ -50,7 +50,8 @@ app.set('views', path.join(__dirname, 'views'));
 
 // app.use('/', adminRoutes);
 
-mongoose.connect(process.env.MONGO_DB_URL)
+// mongoose.connect(process.env.MONGO_DB_URL)
+mongoose.connect(process.env.MONGODB_URL_ATLAS)
   .then(() => {
     console.log("Connected to MongoDB");
   })
@@ -559,7 +560,7 @@ mongoose.connect(process.env.MONGO_DB_URL)
           .then(updatedUser => {
             console.log("Updated user data:", updatedUser);
             const successMessage = 'Resume uploaded and user document updated successfully!';
-            res.render('resume-upload', { email: req.session.email, successMessage });
+            res.render('resume-upload',{ email: req.session.email, successMessage, user });
           })
           .catch(err => {
             console.error('Error updating user document:', err);
