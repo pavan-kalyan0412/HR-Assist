@@ -167,18 +167,18 @@ mongoose.connect(process.env.MONGODB_URL_ATLAS)
   });
 
   
-  app.get('/admin-dashboard', isAuthenticated, (req, res) => {
-    // Fetch all users from the RegisterSchema and sort them by email in ascending order
-    User.find({}).sort({ email: 1 })
-      .then(users => {
+  app.get('/admin-dashboard', isAuthenticated, async (req, res) => {
+    try {
+        // Fetch all users from the RegisterSchema and sort them by email in ascending order
+        const users = await User.find({}).sort({ email: 1 });
         // Render the admin dashboard view with the sorted user data
         res.render('admin-dashboard', { users });
-      })
-      .catch(err => {
+    } catch (err) {
         console.error("Error fetching and sorting user data:", err);
         res.status(500).send("An error occurred while fetching and sorting user data.");
-      });
-  });
+    }
+});
+
 
 
   app.get('/home', checkAuthentication, (req, res) => {
