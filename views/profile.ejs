@@ -31,12 +31,18 @@ nav ul li {
 
 nav ul li a {
   text-decoration: none;
-  color: #ffffff;
+  color: #fff;
+  padding: 8px 12px; /* Add padding to create clickable area around the link text */
 }
 
 nav ul li a:hover {
             color: #47c2cb;
         }
+
+/* Hamburger Menu Styles */
+.hamburger {
+  display: none; /* Initially hidden */
+}
 
 .profile-container {
   display: flex;
@@ -76,11 +82,53 @@ nav ul li a:hover {
       color: #47c2cb; /* Change the color to your desired highlight color */
     }
 
+/* Media queries */
+@media screen and (max-width: 786px) {
+      .hamburger {
+        display: block; /* Show hamburger icon on smaller screens */
+      }
+
+      nav ul {
+        display: none; /* Hide navigation links by default */
+        flex-direction: column; /* Stack navigation links vertically */
+        background-color: #333; /* Change background color for better visibility */
+        position: absolute;
+        top: 60px; /* Adjust top position to avoid overlapping with the header */
+        left: 0;
+        width: 100%;
+        padding: 0;
+        margin: 0;
+      }
+
+      nav ul li {
+        text-align: center;
+        margin: 0;
+        padding: 15px 0;
+        border-bottom: 1px solid #fff; /* Add borders between links */
+      }
+
+      nav ul li:last-child {
+        border-bottom: none; /* Remove border for last link */
+      }
+
+      nav ul li a {
+        color: #fff;
+      }
+
+      nav ul li a:hover {
+        background-color: #200382; /* Change background color on hover */
+      }
+
+      nav.active ul {
+        display: flex; /* Show navigation links when the menu is active */
+      }
+    }
 </style>
 </head>
 <body>
   <!-- Navigation Bar -->
   <nav>
+    <div class="hamburger">&#9776;</div> <!-- Hamburger icon -->
     <ul>
       <li><a href="/home" id="homeLink">Home</a></li>
       <% if (user) { %>
@@ -126,6 +174,13 @@ nav ul li a:hover {
     </a>
   </div>
   <script>
+
+    // Toggle active class to show/hide the menu
+    document.querySelector('.hamburger').addEventListener('click', function() {
+      document.querySelector('nav').classList.toggle('active');
+    });
+
+
     function redirectToDeactivateConfirmationPage() {
       window.location.href = '/deactivate'; 
     }
