@@ -809,7 +809,7 @@ mongoose.connect(process.env.MONGODB_URL_ATLAS)
       subject: 'Password Reset',
       html: `
         <p>Please click the below button to reset your password:</p>
-        <a href="${resetLink}">Reset Password</a>
+        <a href="${resetLink}">Reset your Password</a>
       `
     };
     transporter.sendMail(mailOptions, (error, info) => {
