@@ -209,7 +209,7 @@ mongoose.connect(process.env.MONGODB_URL_ATLAS)
             // Include login button in the response
             const response = `
             <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; height: 50vh;">
-            <p>You have been successfully registered!</p>
+            <p>You ha been successfully registered!</p>
             <button style="background-color: #4CAF50; color: white; padding: 10px 20px; border: none; cursor: pointer; border-radius: 5px;" onclick="location.href='/login.html'">Login</button>
           </div>
   `;
