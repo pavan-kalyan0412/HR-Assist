@@ -61,7 +61,7 @@ app.set('views', path.join(__dirname, 'views'));
 // mongoose.connect(process.env.MONGO_DB_URL)
 mongoose.connect(process.env.MONGODB_URL_ATLAS)
   .then(() => {
-    console.log("Connected to MongoDB");
+    console.log("Connected to MongoDB.....");
   })
   .catch((error) => {
     console.error("Error connecting to MongoDB:", error);
