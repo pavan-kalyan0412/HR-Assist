@@ -14,6 +14,7 @@ const fs = require('fs');
 const bcrypt = require('bcrypt');
 const crypto = require('crypto');
 const nodemailer = require('nodemailer');
+const MongoStore = require('connect-mongo'); 
 
 //const adminRoutes = require('./routes/adminRoutes');
 //const userRoutes = require('./routes/userRoutes');
@@ -22,15 +23,22 @@ const nodemailer = require('nodemailer');
 // Use express-session middleware
 app.use(
   session({
-    secret: 'yoursecuresecret',
+    secret: process.env.SESSION_SECRET || 'yoursecuresecret',
     resave: false,
-    name:'uniqueSessionID',
     saveUninitialized: true,
+    name: 'uniqueSessionID',
+    store: MongoStore.create({
+      mongoUrl: process.env.MONGODB_URL_ATLAS,
+      collectionName: 'sessions'
+    }),
     cookie: {
       maxAge: 86400000,
+      secure: process.env.NODE_ENV === 'production', // Set to true in production
+      httpOnly: true // Helps prevent XSS attacks
     }
   })
 );
+
 
 
 app.use(bodyParser.json());
